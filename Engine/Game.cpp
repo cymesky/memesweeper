@@ -39,10 +39,18 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (wnd.mouse.LeftIsPressed())
+	while (!wnd.mouse.IsEmpty())
 	{
-		Vei2 clickPos = wnd.mouse.GetPos();
-		field.AtTileClick(clickPos);
+		const Mouse::Event e = wnd.mouse.Read();
+		Vei2 clickPos = { e.GetPosX(), e.GetPosY() };
+		if (e.GetType() == Mouse::Event::Type::LPress)
+		{			
+			field.AtTileClick(clickPos);
+		}
+		else if (e.GetType() == Mouse::Event::Type::RPress)
+		{
+			field.AtFlagClick(clickPos);
+		}
 	}
 }
 
